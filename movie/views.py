@@ -2,7 +2,6 @@ import random
 
 from django import forms
 from django.http import HttpResponse
-from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views import generic
 
@@ -27,37 +26,46 @@ def regist(request):
             return HttpResponse('注册成功！' + user.__str__())
 
     form = UserForm()
-    return render(request, 'movie/regist.html', {'form': form})
+    return render(request, 'movie/regist.html', {'form': form, 'isLogin': True})
 
 
 # 登陆
 def login(request):
     if request.method == 'POST':
-        form = UserForm(request.POST)
-        if form.is_valid():
-            username = form['username'].value()
-            password = form['password'].value()
-            user = User.objects.filter(username__exact=username, password__exact=password)
-            if user:
-                # 比较成功，跳转index
-                response = HttpResponseRedirect('/movie/index/')
-                # 将username写入浏览器cookie,失效时间为3600
-                response.set_cookie('username', username, 3600)
-                response.set_cookie('userid', user[0].id, 3600)
-                return response
-            else:
-                # 比较失败，还在login
-                return HttpResponseRedirect('/movie/login/')
-    form = UserForm()
-    return render(request, 'movie/login.html', {'form': form})
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        print('uname:' + username)
+        # form = UserForm(request.POST)
+        # if form.is_valid():
+        #     username = form['username'].value()
+        #     password = form['password'].value()
+        #     user = User.objects.filter(username__exact=username, password__exact=password)
+        #     if user:
+        #         # 比较成功，跳转index
+        #         response = HttpResponseRedirect('/movie/index/')
+        #         # 将username写入浏览器cookie,失效时间为3600
+        #         response.set_cookie('username', username, 3600)
+        #         response.set_cookie('userid', user[0].id, 3600)
+        #         return response
+        #     else:
+        #         # 比较失败，还在login
+        #         return HttpResponseRedirect('/movie/login/')
+        user = User.objects.filter(username__exact=username, password__exact=password)
+        if user:
+            # 比较成功
+            response = render(request, 'movie/index.html', context={'username': username, 'isLogin': True})
+            response.set_cookie('username', username, 3600)
+            return response
+        else:
+            return render(request, 'movie/index.html', {'isLogin': False})
+    return render(request, 'movie/index.html', {'isLogin': False})
 
 
 # 登陆成功
 def index(req):
     username = req.COOKIES.get('username', '')
-    print("Username::" + username)
+    return render(req, 'movie/index.html', {'username': username, 'isLogin': True})
 
-    return render(req, 'movie/index.html', {'username': username})
 
 # 根据link表单中的不完整imdbid计算真正的imdbid
 def calImdbId(imdbId):
@@ -68,6 +76,7 @@ def calImdbId(imdbId):
     result += str(imdbId)
     return result
 
+
 class WatchedView(generic.ListView):
     template_name = 'movie/watched.html'
     context_object_name = 'watched_list'
@@ -76,7 +85,7 @@ class WatchedView(generic.ListView):
         """
         :return:当前用户看过的电影list
         """
-        userid = self.request.GET.get('userid')
+
         userid = 1
         rating_list = Rating.objects.all().filter(userId__exact=userid)
         movie_list = []
@@ -85,9 +94,23 @@ class WatchedView(generic.ListView):
             movie_list.append(Movie.objects.get(imdbId__exact=imdbid))
         return movie_list
 
+    def get_context_data(self, **kwargs):
+        context = super(WatchedView, self).get_context_data(**kwargs)
+        context['isLogin'] = True
+        context['username'] = self.request.COOKIES.get('username')
+        return context
+
+
 class DetailView(generic.DetailView):
     model = Movie
     template_name = 'movie/detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(DetailView, self).get_context_data(**kwargs)
+        context['isLogin'] = True
+        context['username'] = self.request.COOKIES.get('username')
+        return context
+
 
 # def watched(request):
 #     username = request.COOKIES.get('username', '')
@@ -120,7 +143,10 @@ class RecommandView(generic.ListView):
         if len(recommandMovies) >= num:
             print("无需查询")
             print(recommandMovies)
-            recommand_list = Movie.objects.all().filter(imdbId__in=recommandMovies)
+            imdbid_list = []
+            for recommand in recommandMovies:
+                imdbid_list.append(recommand.imdbId)
+            recommand_list = Movie.objects.all().filter(imdbId__in=imdbid_list)
         else:
             recommand_list += Movie.objects.all().filter(imdbId__in=recommandMovies)
             still_need_num = num - len(recommandMovies)
@@ -130,6 +156,13 @@ class RecommandView(generic.ListView):
                 recommand_list.append(Movie.getByImdbId(still_need_name.imdbId))
         print("最终列表长：" + str(len(recommand_list)))
         return recommand_list
+
+    def get_context_data(self, **kwargs):
+        context = super(RecommandView, self).get_context_data(**kwargs)
+        context['isLogin'] = True
+        context['username'] = self.request.COOKIES.get('username')
+        return context
+
 
 # def recommand(request):
 #     username = request.COOKIES.get('username', '')
@@ -168,12 +201,13 @@ def browse(request):
     movienum = len(movies)
     randomnum = random.randint(1, movienum)
     movie = movies[randomnum]
-    return render(request, 'movie/browse.html', {'username': username, 'userid': userid, 'movie': movie})
+    return render(request, 'movie/browse.html',
+                  {'username': username, 'userid': userid, 'movie': movie, 'isLogin': True})
 
 
 # 退出
-def logout(req):
-    response = HttpResponse('logout !!')
+def logout(request):
+    response = render(request, 'movie/index.html', {'isLogin': False})
     # 清理cookie里保存username
     response.delete_cookie('username')
     return response

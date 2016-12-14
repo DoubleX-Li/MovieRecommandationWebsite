@@ -1,10 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+  <head>
+    <meta charset="utf-8">
 
-</body>
+    <link rel="icon" href="../../static/movie/favicon.ico">
+
+    <title>电影推荐系统</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../../static/movie/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../../static/movie/css/carousel.css" rel="stylesheet">
+  </head>
+<!-- NAVBAR
+================================================== -->
+  <body>
+    <div class="navbar-wrapper">
+      <div class="container">
+
+        <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="#">电影推荐系统</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                <li class="active"><a href="/movie">主页</a></li>
+                <li><a href="/movie/watched">我看过的</a></li>
+                <li><a href="/movie/recommand">推荐</a></li>
+				<li><a href="/movie/browse">随便看看</a></li>
+              </ul>
+                {% if isLogin %}
+                    <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/movie/logout">你好， {{ username }}。|退出</a> </li>
+                    </ul>
+                {% else %}
+
+                {% endif %}
+
+            </div>
+          </div>
+        </nav>
+
+      </div>
+    </div>
+<!-- Carousel
+    ================================================== -->
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+      <!-- Indicators -->
+      <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+      </ol>
+      <div class="carousel-inner" role="listbox">
+        <div class="item active">
+          <img src="../../static/movie/image/header.jpg" alt="First slide">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>基于Spark的电影推荐系统</h1>
+              <p>使用MovieLens的数据，使用Spark进行评分预测，推荐你最喜欢的电影。</p>
+              {% if isLogin %}
+
+              {% else %}
+                <form role="form" method="post" action="/movie/login/">
+                {% csrf_token %}
+                  <div class="form-group">
+                    <label for="username">用户名</label>
+                    <input type="text" class="form-control" id="username" name="username" placeholder="请输入用户名">
+                  </div>
+                  <div class="form-group">
+                    <label for="passwrod">密码</label>
+                    <input type="password" class="form-control" id="passwrod" name="password" placeholder="Password">
+                  </div>
+                  <button type="submit" class="btn btn-default">登录</button>
+                </form>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /.carousel -->
+
+
+    <!-- Marketing messaging and featurettes
+    ================================================== -->
+    <!-- Wrap the rest of the page in another container to center all the content. -->
+
+    <div class="container marketing">
+
+	{% block content %}{% endblock %}
+
+      <hr class="featurette-divider">
+
+      <!-- /END THE FEATURETTES -->
+
+
+      <!-- FOOTER -->
+      <footer>
+        <p class="pull-right"><a href="#">返回顶部</a></p>
+        <p>&copy; 2016 Double X Li. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+      </footer>
+
+    </div><!-- /.container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="../../dist/js/bootstrap.min.js"></script>
+    <script src="../../assets/js/docs.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+  </body>
 </html>

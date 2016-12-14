@@ -1,18 +1,76 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>我看过的</title>
-</head>
-<body>
-<h1>welcome {{username}} !</h1>
-<br>
-<a href="http://127.0.0.1:8000/movie/watched/">已看过</a>
-<br>
-<a href="http://127.0.0.1:8000/movie/recommand/">推荐</a>
-<br>
-<a href="http://127.0.0.1:8000/movie/browse/">浏览</a>
-<br>
-<a href="http://127.0.0.1:8000/movie/logout/">退出</a>
-</body>
-</html>
+{% extends "movie/base.html" %}
+
+{% block content %}
+
+
+    <!-- Marketing messaging and featurettes
+    ================================================== -->
+    <!-- Wrap the rest of the page in another container to center all the content. -->
+
+    <div class="container marketing">
+
+      <!-- Three columns of text below the carousel -->
+      <div class="row">
+        <div class="col-lg-4">
+          <img class="img-circle" src="../../static/movie/image/spark.png" alt="Generic placeholder image" style="width: 140px; height: 140px;">
+          <h2>Spark</h2>
+          <p>利用Spark进行预测</p>
+          <p><a class="btn btn-default" href="#" role="button">了解更多 &raquo;</a></p>
+        </div><!-- /.col-lg-4 -->
+        <div class="col-lg-4">
+          <img class="img-circle" src="../../static/movie/image/django.png" alt="Generic placeholder image" style="width: 140px; height: 140px;">
+          <h2>Django</h2>
+          <p>使用Django搭建website</p>
+          <p><a class="btn btn-default" href="#" role="button">了解更多 &raquo;</a></p>
+        </div><!-- /.col-lg-4 -->
+        <div class="col-lg-4">
+          <img class="img-circle" src="../../static/movie/image/bootstrap.png" alt="Generic placeholder image" style="width: 140px; height: 140px;">
+          <h2>BootStrap</h2>
+          <p>使用BootStrap美化界面</p>
+          <p><a class="btn btn-default" href="#" role="button">了解更多 &raquo;</a></p>
+        </div><!-- /.col-lg-4 -->
+      </div><!-- /.row -->
+
+
+      <!-- START THE FEATURETTES -->
+
+      <hr class="featurette-divider">
+
+      <div class="row featurette">
+        <div class="col-md-7">
+          <h2 class="featurette-heading">想你所想</h2>
+          <p class="lead">利用Spark进行预测，精准的预测你对未看过的电影的评分。</p>
+        </div>
+        <div class="col-md-5">
+          <img class="featurette-image img-responsive" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
+        </div>
+      </div>
+
+      <hr class="featurette-divider">
+
+      <div class="row featurette">
+        <div class="col-md-5">
+          <img class="featurette-image img-responsive" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
+        </div>
+        <div class="col-md-7">
+          <h2 class="featurette-heading">第二个特性</h2>
+          <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+        </div>
+      </div>
+
+      <hr class="featurette-divider">
+
+      <div class="row featurette">
+        <div class="col-md-7">
+          <h2 class="featurette-heading">第三个特性</h2>
+          <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+        </div>
+        <div class="col-md-5">
+          <img class="featurette-image img-responsive" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
+        </div>
+      </div>
+
+      <hr class="featurette-divider">
+
+      <!-- /END THE FEATURETTES -->
+{% endblock %}

@@ -1,36 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>电影详情</title>
-</head>
-<body>
-<table>
-    <thead>
-        电影详情
-    </thead>
-    <tbody>
-        <tr>
-            <th>电影名称</th>
-            <th>发行年份</th>
-            <th>电影时长</th>
-            <th>电影海报</th>
-            <th>简要情节</th>
-            <th>IMDB ID</th>
-            <th>IMDB评分</th>
-            <th>你的评分</th>
-        </tr>
-        <tr>
-            <td>{{ movie.moviename }}</td>
-            <td>{{ movie.movieyear }}</td>
-            <td>{{ movie.runtime }}</td>
-            <td><img src="{{ movie.poster }}" width="75px" height="120px" /></td>
-            <td>{{ movie.plot }}</td>
-            <td>{{ movie.imdbId }}</td>
-            <td>{{ movie.imdbRating }}</td>
-            <td>先空着</td>
-        </tr>
-    </tbody>
-</table>
-</body>
-</html>
+{% extends "movie/base.html" %}
+{% block content %}
+      <div class="row">
+        <table class="table table-hover table-condensed">
+            <thead>
+                电影详情
+            </thead>
+            <tbody>
+                <tr>
+                    <th>电影名称</th>
+                    <th>发行年份</th>
+                    <th>电影时长</th>
+                    <th>电影海报</th>
+                    <th>简要情节</th>
+                    <th>IMDB ID</th>
+                    <th>IMDB评分</th>
+                    <th>你的评分</th>
+                </tr>
+                <tr>
+                    <td>{{ movie.moviename }}</td>
+                    <td>{{ movie.movieyear }}</td>
+                    <td>{{ movie.runtime }}</td>
+                    <td><img src="{{ movie.poster }}" width="75px" height="120px" /></td>
+                    <td>{{ movie.plot }}</td>
+                    <td>{{ movie.imdbId }}</td>
+                    <td>{{ movie.imdbRating }}</td>
+                    <td>先空着</td>
+                </tr>
+            </tbody>
+        </table>
+      </div>
+{% endblock %}

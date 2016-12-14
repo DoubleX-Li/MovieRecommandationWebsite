@@ -1,31 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>推荐</title>
-</head>
-<body>
-<p>{{ errorMessage }}</p>
-<table>
-    <thead>
-        向你推荐的电影信息如下
-    </thead>
-    <tbody>
-        <tr>
-            <th>电影名称</th>
-            <th>电影海报</th>
-            <th>预估评分</th>
-            <th>你的评分</th>
-        </tr>
-        {% for recommand in recommand_list %}
-            <tr>
-                <td><a href="http://localhost:8000/movie/detail/{{ recommand.id }}">{{ recommand.moviename }}</a></td>
-                <td><img src="{{ recommand.poster }}" width="75px" height="120px" /></td>
-                <td>先空着</td>
-                <td>先空着</td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
-</body>
-</html>
+{% extends "movie/base.html" %}
+{% block content %}
+      <div class="row">
+
+        <table class="table table-hover table-condensed">
+            <thead>
+                向你推荐的电影信息如下
+            </thead>
+            <tbody>
+                <tr>
+                    <th>电影名称</th>
+                    <th>电影海报</th>
+                    <th>预估评分</th>
+                    <th>你的评分</th>
+                </tr>
+                {% for recommand in recommand_list %}
+                    <tr>
+                        <td><a href="http://localhost:8000/movie/detail/{{ recommand.id }}">{{ recommand.moviename }}</a></td>
+                        <td><img src="{{ recommand.poster }}" width="75px" height="120px" /></td>
+                        <td>先空着</td>
+                        <td>先空着</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+      </div>
+{% endblock %}
