@@ -1,57 +1,33 @@
-{% extends "movie/base_site.html" %}
-{% load i18n static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>登录</title>
+    <!-- Bootstrap core CSS -->
+    <link href="../../static/movie/dist/css/bootstrap.min.css" rel="stylesheet">
 
-{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "movie/css/login.css" %}" />
-{{ form.media }}
-{% endblock %}
+    <!-- Custom styles for this template -->
+    <link href="../../static/movie/css/signin.css" rel="stylesheet">
+  </head>
 
-{% block bodyclass %}{{ block.super }} login{% endblock %}
+  <body>
 
-{% block usertools %}{% endblock %}
+    <div class="container">
 
-{% block nav-global %}{% endblock %}
+      <form class="form-signin" role="form" action="">
+        <h2 class="form-signin-heading">请登录</h2>
+        <input type="text" class="form-control" placeholder="用户名" required autofocus>
+        <input type="password" class="form-control" placeholder="密码" required>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="remember-me"> 请记住我
+          </label>
+        </div>
+        <button class="btn btn-lg btn-success" type="submit">登录</button>
+        <button class="btn btn-lg btn-primary" href="/movie/regist.html">注册</button>
+      </form>
 
-{% block content_title %}{% endblock %}
+    </div> <!-- /container -->
 
-{% block breadcrumbs %}{% endblock %}
-
-{% block content %}
-{% if form.errors and not form.non_field_errors %}
-<p class="errornote">
-{% if form.errors.items|length == 1 %}{% trans "Please correct the error below." %}{% else %}{% trans "Please correct the errors below." %}{% endif %}
-</p>
-{% endif %}
-
-{% if form.non_field_errors %}
-{% for error in form.non_field_errors %}
-<p class="errornote">
-    {{ error }}
-</p>
-{% endfor %}
-{% endif %}
-
-<div id="content-main">
-
-<form method="post" id="login-form">{% csrf_token %}
-  <div class="form-row">
-    {{ form.username.errors }}
-    {{ form.username.label_tag }} {{ form.username }}
-  </div>
-  <div class="form-row">
-    {{ form.password.errors }}
-    {{ form.password.label_tag }} {{ form.password }}
-    <input type="hidden" name="next" value="{{ next }}" />
-  </div>
-  {% url 'admin_password_reset' as password_reset_url %}
-  {% if password_reset_url %}
-  <div class="password-reset-link">
-    <a href="{{ password_reset_url }}">{% trans 'Forgotten your password or username?' %}</a>
-  </div>
-  {% endif %}
-  <div class="submit-row">
-    <input type="submit" value="{% trans 'Log in' %}" />
-    <input type="button" value="注册" onclick="location.href='http://127.0.0.1:8000/movie/regist/'" />
-  </div>
-</form>
-</div>
-{% endblock %}
+  </body>
+</html>

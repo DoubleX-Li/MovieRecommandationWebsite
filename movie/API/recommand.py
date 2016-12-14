@@ -1,5 +1,8 @@
 import requests
 
+from movie.models import Movie, Recommand
+
+
 def parseMoviename(moviename):
     if moviename.__contains__('"'):
         moviename = moviename[1:]
@@ -18,5 +21,7 @@ class RecommandAPI():
             moviename = parseMoviename(movie[0])
             movierating = movie[1]
             ratingnum = movie[2]
-            movies.append([moviename, movierating, ratingnum])
+            imdbid = Movie.getByMovieName(moviename).imdbId
+            recommand = Recommand.objects.create(userId=1, imdbId=imdbid, rating=movierating)
+            movies.append(recommand)
         return movies

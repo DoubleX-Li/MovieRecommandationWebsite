@@ -37,8 +37,7 @@ class Movie(models.Model):
 
     @staticmethod
     def getByDataId(dataId):
-        imdbId = Link.objects.get(dataId__exact=dataId).movieId
-        imdbId = calImdbId(imdbId)
+        imdbId = Link.getImdbIdByDataId(dataId)
         return Movie.getByImdbId(imdbId)
 
     @staticmethod
@@ -78,7 +77,13 @@ class Link(models.Model):
     dataId = models.IntegerField()
     movieId = models.IntegerField()
 
+    @staticmethod
+    def getImdbIdByDataId(dataid):
+        imdbid = Link.objects.get(dataId__exact=dataid).movieId
+        return calImdbId(imdbid)
+
 class Recommand(models.Model):
     userId = models.IntegerField()
     imdbId = models.CharField(max_length=50)
+    rating = models.FloatField(default=0)
 
