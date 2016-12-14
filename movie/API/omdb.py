@@ -1,6 +1,6 @@
 import requests
 
-class API():
+class OMDBAPI():
     # def getDataByDataID(self, dataId):
     #     imdbId = Link.objects.get(dataId__exact=dataId)
     #     if len(imdbId) < 7:

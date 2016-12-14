@@ -1,6 +1,6 @@
 from django.db import models
 
-from movie.API.OMDBAPI import API
+from movie.API.omdb import OMDBAPI
 
 
 def calImdbId(imdbId):
@@ -39,19 +39,26 @@ class Movie(models.Model):
         imdbId = Link.objects.get(dataId__exact=dataId).movieId
         imdbId = calImdbId(imdbId)
         movie = Movie.objects.all().filter(imdbId__exact=imdbId)
-        if movie:
+        if len(movie) == 0:
+            print("在OMDB查询")
+            info = OMDBAPI.getDataByImdbID(imdbId)
+            movie = Movie.objects.create(moviename=info['moviename'],
+                                         movieyear=info['movieyear'],
+                                         runtime=info['runtime'],
+                                         poster=info['poster'],
+                                         imdbRating=info['imdbRating'],
+                                         imdbId=info['imdbId'],
+                                         plot=info['plot'])
             return movie
         else:
-            info = API.getDataByImdbID(imdbId)
-            movie = Movie.objects.create(moviename=info['moviename'],
-                                 movieyear=info['movieyear'],
-                                 runtime=info['runtime'],
-                                 poster=info['poster'],
-                                 imdbRating=info['imdbRating'],
-                                 imdbId=info['imdbId'],
-                                 plot=info['plot'])
-            return movie
+            print("在数据库中找到")
+            return movie[0]
 
+    def getByMovieName(moviename):
+        data = Data.objects.all().filter(dataname__contains=moviename)[0]
+        dataid = data.id
+        movie = Movie.getByDataId(dataid)
+        return movie
 
 class Data(models.Model):
     dataname = models.CharField(max_length=50, verbose_name='数据名称')

@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
+from movie.API.recommand import RecommandAPI
 from movie.models import User, Rating, Movie, Link
 
 
@@ -61,15 +62,31 @@ def watched(request):
     errorMessage = ''
     for watchedMovie in watchedList:
         dataId = Link.objects.get(dataId__exact=watchedMovie.dataId).dataId
-        movie = Movie.getByDataId(dataId=dataId)[0]
+        movie = Movie.getByDataId(dataId=dataId)
         if movie:
             watchedListDetail.append(movie)
         else:
             errorMessage += "没有找到电影" + dataId
-    print("查看详情")
-    for i in watchedListDetail:
-        print(i.moviename)
     return render(request, 'movie/watched.html', {'username': username,'watchedListDetail':watchedListDetail, 'errorMessage':errorMessage})
+
+def recommand(request):
+    username = request.COOKIES.get('username', '')
+    num = 10
+    recommandMovies = RecommandAPI().getRecommand(num)
+    recommandMoviesDetail = []
+    errorMessage = ''
+    for recommandMovie in recommandMovies:
+        movie = Movie.getByMovieName(recommandMovie[0])
+        if movie:
+            print("得到了：" + movie.moviename)
+            # movie['predictRating'] = recommandMovie[1]
+            # movie['ratingNum'] = recommandMovie[2]
+            recommandMoviesDetail.append(movie)
+        else:
+            errorMessage += "没有找到电影" + recommandMovie[0]
+    return render(request, 'movie/recommand.html',
+                      {'username': username, 'recommandMoviesDetail': recommandMoviesDetail, 'errorMessage': errorMessage})
+
 
 # 退出
 def logout(req):

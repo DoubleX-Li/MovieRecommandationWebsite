@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>推荐</title>
+</head>
+<body>
+<p>{{ errorMessage }}</p>
+<table>
+    <thead>
+        向你推荐的10部电影信息如下
+    </thead>
+    <tbody>
+        <tr>
+            <th>电影名称</th>
+            <th>发行年份</th>
+            <th>电影时长</th>
+            <th>电影海报</th>
+            <th>简要情节</th>
+            <th>IMDB ID</th>
+            <th>IMDB评分</th>
+            <th>预估评分</th>
+            <th>你的评分</th>
+        </tr>
+        {% for recommandMovie in recommandMoviesDetail %}
+            <tr>
+                <td>{{ recommandMovie.moviename }}</td>
+                <td>{{ recommandMovie.movieyear }}</td>
+                <td>{{ recommandMovie.runtime }}</td>
+                <td><img src="{{ recommandMovie.poster }}" width="75px" height="120px" /></td>
+                <td>{{ recommandMovie.plot }}</td>
+                <td>{{ recommandMovie.imdbId }}</td>
+                <td>{{ recommandMovie.imdbRating }}</td>
+                <td>先空着</td>
+                <td>先空着</td>
+
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>
