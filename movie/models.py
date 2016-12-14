@@ -35,13 +35,18 @@ class Movie(models.Model):
     def __str__(self):
         return self.moviename
 
+    @staticmethod
     def getByDataId(dataId):
         imdbId = Link.objects.get(dataId__exact=dataId).movieId
         imdbId = calImdbId(imdbId)
-        movie = Movie.objects.all().filter(imdbId__exact=imdbId)
+        return Movie.getByImdbId(imdbId)
+
+    @staticmethod
+    def getByImdbId(imdbid):
+        movie = Movie.objects.all().filter(imdbId__exact=imdbid)
         if len(movie) == 0:
             print("在OMDB查询")
-            info = OMDBAPI.getDataByImdbID(imdbId)
+            info = OMDBAPI.getDataByImdbID(imdbid)
             movie = Movie.objects.create(moviename=info['moviename'],
                                          movieyear=info['movieyear'],
                                          runtime=info['runtime'],
@@ -54,6 +59,7 @@ class Movie(models.Model):
             print("在数据库中找到")
             return movie[0]
 
+    @staticmethod
     def getByMovieName(moviename):
         data = Data.objects.all().filter(dataname__contains=moviename)[0]
         dataid = data.id
@@ -71,4 +77,8 @@ class Rating(models.Model):
 class Link(models.Model):
     dataId = models.IntegerField()
     movieId = models.IntegerField()
+
+class Recommand(models.Model):
+    userId = models.IntegerField()
+    imdbId = models.CharField(max_length=50)
 

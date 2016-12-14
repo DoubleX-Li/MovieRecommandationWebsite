@@ -1,10 +1,12 @@
+import random
+
 from django import forms
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
 from movie.API.recommand import RecommandAPI
-from movie.models import User, Rating, Movie, Link
+from movie.models import User, Rating, Movie, Link, Recommand
 
 
 # 表单
@@ -40,6 +42,7 @@ def login(request):
                 response = HttpResponseRedirect('/movie/index/')
                 # 将username写入浏览器cookie,失效时间为3600
                 response.set_cookie('username', username, 3600)
+                response.set_cookie('userid', user[0].id, 3600)
                 return response
             else:
                 # 比较失败，还在login
@@ -71,22 +74,42 @@ def watched(request):
 
 def recommand(request):
     username = request.COOKIES.get('username', '')
-    num = 10
-    recommandMovies = RecommandAPI().getRecommand(num)
+    userid = request.COOKIES.get('userid', '')
+    num = 50
     recommandMoviesDetail = []
     errorMessage = ''
-    for recommandMovie in recommandMovies:
-        movie = Movie.getByMovieName(recommandMovie[0])
-        if movie:
-            print("得到了：" + movie.moviename)
-            # movie['predictRating'] = recommandMovie[1]
-            # movie['ratingNum'] = recommandMovie[2]
-            recommandMoviesDetail.append(movie)
-        else:
-            errorMessage += "没有找到电影" + recommandMovie[0]
+    recommandMovies = Recommand.objects.all().filter(userId__exact=userid)
+    if len(recommandMovies) == 0:
+        print("推荐信息未找到，获取")
+        recommandMovies = RecommandAPI().getRecommand(num)
+        for recommandMovie in recommandMovies:
+            movie = Movie.getByMovieName(recommandMovie[0])
+            if movie:
+                print("得到了：" + movie.moviename)
+                Recommand.objects.create(userId=userid, imdbId=movie.imdbId)
+                recommandMoviesDetail.append(movie)
+            else:
+                errorMessage += "没有找到电影" + recommandMovie[0]
+    else:
+        print("推荐信息找到，从数据库中读取")
+        for recommandMovie in recommandMovies:
+            movie = Movie.getByImdbId(recommandMovie.imdbId)
+            if movie:
+                print("得到了：" + movie.moviename)
+                recommandMoviesDetail.append(movie)
+            else:
+                errorMessage += "没有找到电影" + recommandMovie[0]
     return render(request, 'movie/recommand.html',
                       {'username': username, 'recommandMoviesDetail': recommandMoviesDetail, 'errorMessage': errorMessage})
 
+def browse(request):
+    username = request.COOKIES.get('username', '')
+    userid = request.COOKIES.get('userid', '')
+    movies = Movie.objects.all()
+    movienum = len(movies)
+    randomnum = random.randint(1, movienum)
+    movie = movies[randomnum]
+    return render(request, 'movie/browse.html', {'username': username, 'userid':userid, 'movie':movie})
 
 # 退出
 def logout(req):

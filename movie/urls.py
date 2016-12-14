@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'^logout/$',views.logout,name = 'logout'),
     url(r'^watched/$',views.watched,name = 'watched'),
     url(r'^recommand/$',views.recommand,name = 'recommand'),
+    url(r'^browse/$', views.browse, name = 'browse'),
 ]

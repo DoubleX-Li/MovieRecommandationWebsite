@@ -21,7 +21,8 @@ class OMDBAPI():
 
     def getDataByImdbID(imdbId):
         url = 'http://www.omdbapi.com/?' + 'i=' + imdbId
-        info = requests.get(url).json()
+        proxy = {'localhost':1920}
+        info = requests.get(url, proxies=proxy).json()
 
         movieInfo = {
             'moviename': info['Title'],
