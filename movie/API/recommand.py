@@ -6,10 +6,8 @@ from movie.models import Movie, Recommand
 def parseMoviename(moviename):
     if moviename.__contains__('"'):
         moviename = moviename[1:]
-    # if moviename.__contains__(' ('):
-    #     index = moviename.index(' (')
-    #     moviename = moviename[:index]
     return moviename
+
 
 class RecommandAPI():
     def getRecommand(self, num):

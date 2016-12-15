@@ -1,7 +1,7 @@
 {% extends "movie/base.html" %}
 {% block content %}
       <div class="row">
-        <table class="table table-hover table-striped">
+        <table class="table table-hover table-striped" id="table">
             <thead>
                 电影详情
             </thead>
@@ -25,7 +25,7 @@
                 </tr>
                 <tr>
                     <td>IMDB ID</td>
-                    <td>{{ movie.imdbId }}</td>
+                    <td><a href="http://www.imdb.com/title/{{ movie.imdbId }}">{{ movie.imdbId }}</a> </td>
                 </tr>
                 <tr>
                     <td style="word-break: keep-all">IMDB评分</td>

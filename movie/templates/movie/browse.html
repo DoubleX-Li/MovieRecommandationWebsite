@@ -1,9 +1,27 @@
 {% extends "movie/base.html" %}
 {% block content %}
       <div class="row">
-        <p>随机到的电影如下：</p>
-        <p><a href="/movie/detail/{{ movie.id }}">电影名称：{{ movie.moviename }}</a> </p>
-        <p>发行年份：{{ movie.movieyear }}</p>
-        <p>电影海报：<img src="{{ movie.poster }}" width="75px" height="120px" /> </p>
+
+        <table id="table" class="table table-hover table-condensed">
+            <thead>
+                随机选取的电影如下
+            </thead>
+            <tbody>
+                <tr>
+                    <th>电影海报</th>
+                    <th>电影名称</th>
+                    <th>IMDB评分</th>
+                </tr>
+                {% for movie in random_movie_list %}
+                    <tr>
+                        <td><img src="{{ movie.poster }}" width="75px" height="120px" /></td>
+                        <td><a href="/movie/detail/{{ movie.id }}/#table">{{ movie.moviename }}</a></td>
+                        <td>{{ movie.imdbRating }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
       </div>
+    <button class="btn btn-lg btn-default" onclick="{location.href='/movie/browse#table'}" style="margin: auto">下一批</button>
 {% endblock %}

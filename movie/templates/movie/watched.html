@@ -2,7 +2,7 @@
 {% block content %}
       <div class="row">
 
-        <table class="table table-hover table-condensed"s>
+        <table class="table table-hover table-condensed" id="table">
             <thead>
                 你看过的电影及评分如下
             </thead>
@@ -15,7 +15,7 @@
                 {% for movie, rating in watched_list %}
                     <tr>
                         <td><img src="{{ movie.poster }}" width="75px" height="120px" /></td>
-                        <td><a href="http://localhost:8000/movie/detail/{{ movie.id }}">{{ movie.moviename }}</a></td>
+                        <td><a href="/movie/detail/{{ movie.id }}">{{ movie.moviename }}</a></td>
                         <td>{{ rating }}</td>
                     </tr>
                 {% endfor %}

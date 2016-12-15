@@ -33,10 +33,10 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
               <ul class="nav navbar-nav">
-                <li class="active"><a href="/movie">主页</a></li>
-                <li><a href="/movie/watched">我看过的</a></li>
-                <li><a href="/movie/recommand">向我推荐</a></li>
-				<li><a href="/movie/browse">随便看看</a></li>
+                <li id="home" class="active"><a href="/movie">主页</a></li>
+                <li id="watched"><a href="/movie/watched#table">我看过的</a></li>
+                <li id="recommand"><a href="/movie/recommand#table">向我推荐</a></li>
+				<li id="browse"><a href="/movie/browse#table">随便看看</a></li>
               </ul>
                 {% if isLogin %}
                     <ul class="nav navbar-nav navbar-right">
@@ -117,5 +117,6 @@
     <script src="/static/movie/js/jquery.min.js"></script>
     <script src="/static/movie/dist/js/bootstrap.min.js"></script>
     <script src="/static/movie/js/docs.min.js"></script>
+    <script src="/static/movie/js/active.js"></script>
   </body>
 </html>

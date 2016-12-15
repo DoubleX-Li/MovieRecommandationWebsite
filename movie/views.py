@@ -85,12 +85,10 @@ class WatchedView(generic.ListView):
         """
         :return:当前用户看过的电影list
         """
-
         userid = 1
         rating_list = Rating.objects.all().filter(userId__exact=userid)
         movie_list = []
         for rating in rating_list:
-
             imdbid = calImdbId(Link.objects.get(dataId__exact=rating.dataId).movieId)
             movie_list.append((Movie.objects.get(imdbId__exact=imdbid), rating.rating))
         return movie_list
@@ -111,20 +109,7 @@ class DetailView(generic.DetailView):
         context['isLogin'] = True
         context['username'] = self.request.COOKIES.get('username')
         return context
-# def watched(request):
-#     username = request.COOKIES.get('username', '')
-#     watchedList = User.objects.get(username__exact=username).getWatched()
-#     watchedListDetail = []
-#     errorMessage = ''
-#     for watchedMovie in watchedList:
-#         dataId = Link.objects.get(dataId__exact=watchedMovie.dataId).dataId
-#         movie = Movie.getByDataId(dataId=dataId)
-#         if movie:
-#             watchedListDetail.append(movie)
-#         else:
-#             errorMessage += "没有找到电影" + dataId
-#     return render(request, 'movie/watched.html',
-#                   {'username': username, 'watchedListDetail': watchedListDetail, 'errorMessage': errorMessage})
+
 
 class RecommandView(generic.ListView):
     template_name = 'movie/recommand.html'
@@ -140,13 +125,9 @@ class RecommandView(generic.ListView):
         recommandMovies = Recommand.objects.all().filter(userId__exact=userid)
         print("库中有的推荐信息有：" + str(len(recommandMovies)))
         for recommand in recommandMovies:
-            recommand_list.append((Movie.objects.filter(imdbId=recommand.imdbId)[0], round(recommand.rating/2, 2)))
+            recommand_list.append((Movie.objects.filter(imdbId=recommand.imdbId)[0], round(recommand.rating / 2, 2)))
         if len(recommandMovies) >= num:
             print("无需查询")
-            # print(recommandMovies)
-            # imdbid_list = []
-                # imdbid_list.append(recommand.imdbId)
-            # recommand_list = Movie.objects.all().filter(imdbId__in=imdbid_list)
         else:
             still_need_num = num - len(recommandMovies)
             print("Still need num:" + str(still_need_num))
@@ -163,45 +144,23 @@ class RecommandView(generic.ListView):
         return context
 
 
-# def recommand(request):
-#     username = request.COOKIES.get('username', '')
-#     userid = request.COOKIES.get('userid', '')
-#     num = 50
-#     recommandMoviesDetail = []
-#     errorMessage = ''
-#     recommandMovies = Recommand.objects.all().filter(userId__exact=userid)
-#     if len(recommandMovies) == 0:
-#         print("推荐信息未找到，获取")
-#         recommandMovies = RecommandAPI().getRecommand(num)
-#         for recommandMovie in recommandMovies:
-#             movie = Movie.getByMovieName(recommandMovie[0])
-#             if movie:
-#                 print("得到了：" + movie.moviename)
-#                 Recommand.objects.create(userId=userid, imdbId=movie.imdbId)
-#                 recommandMoviesDetail.append(movie)
-#             else:
-#                 errorMessage += "没有找到电影" + recommandMovie[0]
-#     else:
-#         print("推荐信息找到，从数据库中读取")
-#         for recommandMovie in recommandMovies:
-#             movie = Movie.getByImdbId(recommandMovie.imdbId)
-#             if movie:
-#                 print("得到了：" + movie.moviename)
-#                 recommandMoviesDetail.append(movie)
-#             else:
-#                 errorMessage += "没有找到电影" + recommandMovie[0]
-#     return render(request, 'movie/recommand.html',
-#                   {'username': username, 'recommandMoviesDetail': recommandMoviesDetail, 'errorMessage': errorMessage})
-
 def browse(request):
     username = request.COOKIES.get('username', '')
     userid = request.COOKIES.get('userid', '')
-    movies = Movie.objects.all()
-    movienum = len(movies)
-    randomnum = random.randint(1, movienum)
-    movie = movies[randomnum]
+    num = 6
+    movie_list = Movie.objects.all()
+    movie_sum = len(movie_list)
+    random_index_list = []
+    random_movie_list = []
+    while len(random_index_list) < num:
+        random_index = random.randint(1, movie_sum) - 1
+        if random_index in random_index_list:
+            pass
+        else:
+            random_index_list.append(random_index)
+            random_movie_list.append(movie_list[random_index])
     return render(request, 'movie/browse.html',
-                  {'username': username, 'userid': userid, 'movie': movie, 'isLogin': True})
+                  {'username': username, 'userid': userid, 'random_movie_list': random_movie_list, 'isLogin': True})
 
 
 # 退出

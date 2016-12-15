@@ -11,6 +11,7 @@ def calImdbId(imdbId):
     result += str(imdbId)
     return result
 
+
 class User(models.Model):
     username = models.CharField(max_length=50)
     password = models.CharField(max_length=50)
@@ -22,6 +23,7 @@ class User(models.Model):
         userid = User.objects.get(username__exact=self.username).id
         wathcedList = Rating.objects.all().filter(userId=userid)
         return wathcedList
+
 
 class Movie(models.Model):
     moviename = models.CharField(max_length=50, verbose_name='电影名称')
@@ -65,13 +67,16 @@ class Movie(models.Model):
         movie = Movie.getByDataId(dataid)
         return movie
 
+
 class Data(models.Model):
     dataname = models.CharField(max_length=50, verbose_name='数据名称')
+
 
 class Rating(models.Model):
     userId = models.IntegerField()
     dataId = models.IntegerField()
     rating = models.FloatField(default=0, verbose_name='评分')
+
 
 class Link(models.Model):
     dataId = models.IntegerField()
@@ -82,8 +87,8 @@ class Link(models.Model):
         imdbid = Link.objects.get(dataId__exact=dataid).movieId
         return calImdbId(imdbid)
 
+
 class Recommand(models.Model):
     userId = models.IntegerField()
     imdbId = models.CharField(max_length=50)
     rating = models.FloatField(default=0)
-
