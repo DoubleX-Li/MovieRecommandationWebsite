@@ -11,23 +11,25 @@
             </thead>
             <tbody>
                 <tr>
-                    <th>电影名称</th>
                     <th>电影海报</th>
+                    <th>电影名称</th>
                     <th>预估评分</th>
                     <th>你的评分</th>
                 </tr>
                 {% for recommand, rating in recommand_list %}
                     <tr>
-                        <td><a href="/movie/detail/{{ recommand.id }}">{{ recommand.moviename }}</a></td>
                         <td><img src="{{ recommand.poster }}" width="75px" height="120px" /></td>
+                        <td><a href="/movie/detail/{{ recommand.id }}">{{ recommand.moviename }}</a></td>
                         <td>{{ rating }}</td>
-                        <td><select class="form-control">
-                          <option>1</option>
-                          <option>2</option>
-                          <option>3</option>
-                          <option>4</option>
-                          <option>5</option>
-                        </select></td>
+                        <td>
+                            <select class="form-control">
+                              <option>1</option>
+                              <option>2</option>
+                              <option>3</option>
+                              <option>4</option>
+                              <option>5</option>
+                            </select>
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>

@@ -1,30 +1,48 @@
 {% extends "movie/base.html" %}
 {% block content %}
       <div class="row">
-        <table class="table table-hover table-condensed">
+        <table class="table table-hover table-striped">
             <thead>
                 电影详情
             </thead>
             <tbody>
                 <tr>
-                    <th>电影名称</th>
-                    <th>发行年份</th>
-                    <th>电影时长</th>
-                    <th>电影海报</th>
-                    <th>简要情节</th>
-                    <th>IMDB ID</th>
-                    <th>IMDB评分</th>
-                    <th>你的评分</th>
+                    <td rowspan="7"><img src="{{ movie.poster }}" width="300px" height="450px"/></td>
+                    <td>电影名称</td>
+                    <td>{{ movie.moviename }}</td>
                 </tr>
                 <tr>
-                    <td>{{ movie.moviename }}</td>
+                    <td>发行年份</td>
                     <td>{{ movie.movieyear }}</td>
+                </tr>
+                <tr>
+                    <td>电影时长</td>
                     <td>{{ movie.runtime }}</td>
-                    <td><img src="{{ movie.poster }}" width="75px" height="120px" /></td>
+                </tr>
+                <tr>
+                    <td>简要情节</td>
                     <td>{{ movie.plot }}</td>
+                </tr>
+                <tr>
+                    <td>IMDB ID</td>
                     <td>{{ movie.imdbId }}</td>
+                </tr>
+                <tr>
+                    <td style="word-break: keep-all">IMDB评分</td>
                     <td>{{ movie.imdbRating }}</td>
-                    <td>先空着</td>
+                </tr>
+                <tr>
+                    <td>你的评分</td>
+                    <td>
+                        <select class="form-control-static">
+                          <option>1</option>
+                          <option>2</option>
+                          <option>3</option>
+                          <option>4</option>
+                          <option>5</option>
+                        </select>
+                        <input class="btn btn-primary" type="button" value="提交" onclick="alert('提交成功')">
+                    </td>
                 </tr>
             </tbody>
         </table>
