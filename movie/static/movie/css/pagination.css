@@ -1,0 +1,75 @@
+/*分页导航*/
+#pagenavi {
+    position: relative;
+    height: 32px;
+    margin: 29px 0 45px;
+}
+
+#pagenavi a, #pagenavi span {
+    height: 32px;
+    line-height: 32px;
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    padding: 0px 15px;
+    color: #333;
+    font-size: 15px;
+}
+
+#pagenavi a {
+    margin: 0 2px;
+}
+
+#pagenavi a:hover {
+    color: #3e8fff;
+    background-color: #fbfdfd;
+}
+
+#pagenavi span.pages {
+    color: #777;
+    font-weight: bold;
+    margin-right: 10px;
+    padding: 0;
+}
+
+#pagenavi span.current {
+    font-size: 15px;
+    color: #3e8fff;
+    background-color: #fbfdfd;
+}
+
+#pagenavi .next-page {
+    position: absolute;
+    right: 0px;
+    padding: 0px;
+    width: 88px;
+    margin: 0px;
+    text-align: center;
+}
+
+#pagenavi .first-page {
+    margin-left: 450px;
+}
+
+#pagenavi .next-page .icon-next {
+    position: absolute;
+    right: 0px;
+    top: 6px;
+    padding: 0px;
+}
+
+#pagenavi .previous-page {
+    position: absolute;
+    left: 0px;
+    padding: 0px;
+    width: 88px;
+    margin: 0px;
+    text-align: center;
+}
+
+#pagenavi .previous-page .icon-previous {
+    position: absolute;
+    left: 0px;
+    top: 6px;
+    padding: 0px;
+}

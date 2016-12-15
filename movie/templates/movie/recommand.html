@@ -1,5 +1,8 @@
 {% extends "movie/base.html" %}
 {% block content %}
+    {% load paginate_tags %}
+    {% paginate recommand_list 10 %}
+
       <div class="row">
 
         <table class="table table-hover table-condensed">
@@ -18,10 +21,18 @@
                         <td><a href="/movie/detail/{{ recommand.id }}">{{ recommand.moviename }}</a></td>
                         <td><img src="{{ recommand.poster }}" width="75px" height="120px" /></td>
                         <td>{{ rating }}</td>
-                        <td>先空着</td>
+                        <td><select class="form-control">
+                          <option>1</option>
+                          <option>2</option>
+                          <option>3</option>
+                          <option>4</option>
+                          <option>5</option>
+                        </select></td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
       </div>
+    {% include 'movie/pagination.html' %}
+
 {% endblock %}
