@@ -12,11 +12,11 @@
                     <th>电影海报</th>
                     <th>你的评分</th>
                 </tr>
-                {% for watched in watched_list %}
+                {% for movie, rating in watched_list %}
                     <tr>
-                        <td><a href="http://localhost:8000/movie/detail/{{ watched.id }}">{{ watched.moviename }}</a></td>
-                        <td><img src="{{ watched.poster }}" width="75px" height="120px" /></td>
-                        <td>先空着</td>
+                        <td><a href="http://localhost:8000/movie/detail/{{ movie.id }}">{{ movie.moviename }}</a></td>
+                        <td><img src="{{ movie.poster }}" width="75px" height="120px" /></td>
+                        <td>{{ rating }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

@@ -13,11 +13,11 @@
                     <th>预估评分</th>
                     <th>你的评分</th>
                 </tr>
-                {% for recommand in recommand_list %}
+                {% for recommand, rating in recommand_list %}
                     <tr>
-                        <td><a href="http://localhost:8000/movie/detail/{{ recommand.id }}">{{ recommand.moviename }}</a></td>
+                        <td><a href="/movie/detail/{{ recommand.id }}">{{ recommand.moviename }}</a></td>
                         <td><img src="{{ recommand.poster }}" width="75px" height="120px" /></td>
-                        <td>先空着</td>
+                        <td>{{ rating }}</td>
                         <td>先空着</td>
                     </tr>
                 {% endfor %}

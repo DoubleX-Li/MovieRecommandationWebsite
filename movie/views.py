@@ -90,8 +90,9 @@ class WatchedView(generic.ListView):
         rating_list = Rating.objects.all().filter(userId__exact=userid)
         movie_list = []
         for rating in rating_list:
+
             imdbid = calImdbId(Link.objects.get(dataId__exact=rating.dataId).movieId)
-            movie_list.append(Movie.objects.get(imdbId__exact=imdbid))
+            movie_list.append((Movie.objects.get(imdbId__exact=imdbid), rating.rating))
         return movie_list
 
     def get_context_data(self, **kwargs):
@@ -110,8 +111,6 @@ class DetailView(generic.DetailView):
         context['isLogin'] = True
         context['username'] = self.request.COOKIES.get('username')
         return context
-
-
 # def watched(request):
 #     username = request.COOKIES.get('username', '')
 #     watchedList = User.objects.get(username__exact=username).getWatched()
@@ -140,20 +139,20 @@ class RecommandView(generic.ListView):
         recommand_list = []
         recommandMovies = Recommand.objects.all().filter(userId__exact=userid)
         print("库中有的推荐信息有：" + str(len(recommandMovies)))
+        for recommand in recommandMovies:
+            recommand_list.append((Movie.objects.filter(imdbId=recommand.imdbId)[0], round(recommand.rating/2, 2)))
         if len(recommandMovies) >= num:
             print("无需查询")
-            print(recommandMovies)
-            imdbid_list = []
-            for recommand in recommandMovies:
-                imdbid_list.append(recommand.imdbId)
-            recommand_list = Movie.objects.all().filter(imdbId__in=imdbid_list)
+            # print(recommandMovies)
+            # imdbid_list = []
+                # imdbid_list.append(recommand.imdbId)
+            # recommand_list = Movie.objects.all().filter(imdbId__in=imdbid_list)
         else:
-            recommand_list += Movie.objects.all().filter(imdbId__in=recommandMovies)
             still_need_num = num - len(recommandMovies)
             print("Still need num:" + str(still_need_num))
             still_need_name_list = RecommandAPI().getRecommand(still_need_num)
             for still_need_name in still_need_name_list:
-                recommand_list.append(Movie.getByImdbId(still_need_name.imdbId))
+                recommand_list.append((Movie.getByImdbId(still_need_name.imdbId), still_need_name.rating))
         print("最终列表长：" + str(len(recommand_list)))
         return recommand_list
 
